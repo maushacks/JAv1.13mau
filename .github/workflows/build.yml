@@ -171,3 +171,12 @@ jobs:
           path: source
           fetch-depth: 1
           sparse-checkout: 'README.md'
+
+       - name: Create Release
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.exe \
+            --title "Release $GITHUB_REF_NAME" \
+            --notes "This release includes the built executables."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
