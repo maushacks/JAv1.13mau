@@ -140,7 +140,7 @@ jobs:
           path: dist/
 
   build:
-    needs: [ workflow_setup ]
+    needs: [workflow_setup]
     strategy:
       fail-fast: false
       matrix:
@@ -152,12 +152,10 @@ jobs:
       continue-on-error: ${{ matrix.language != 'English' && matrix.language != 'German' }}
 
   release:
-    needs: [ workflow_setup, build ]
+    needs: [workflow_setup, build]
     if: needs.workflow_setup.outputs.assemble_release == 'true'
     runs-on: ubuntu-latest
-
-
-  steps:
+    steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -173,11 +171,10 @@ jobs:
           fetch-depth: 1
           sparse-checkout: 'README.md'
 
-       - name: Create Release
+      - name: Create Release
         run: |
           gh release create "$GITHUB_REF_NAME" dist/*.exe \
             --title "Release $GITHUB_REF_NAME" \
             --notes "This release includes the built executables."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
