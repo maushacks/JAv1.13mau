@@ -4609,6 +4609,32 @@ void ExecuteStrategicAIAction( UINT16 usActionCode, INT16 sSectorX, INT16 sSecto
 
 			// make sure that we use at least the min group size
 			ubNumSoldiers = (UINT8)( __max(zDiffSetting[gGameOptions.ubDifficultyLevel].iCounterAttackGroupSize, zDiffSetting[gGameOptions.ubDifficultyLevel].iMinEnemyGroupSize) );
+            UINT32 difficultyModNum;
+        	switch (gGameOptions.ubDifficultyLevel)
+            	{
+            	case DIF_LEVEL_EASY:	difficultyModNum = 1; break;
+            	case DIF_LEVEL_MEDIUM:	difficultyModNum = 2; break;
+            	case DIF_LEVEL_HARD:	difficultyModNum = 3; break;
+            	case DIF_LEVEL_INSANE:	difficultyModNum = 4; break;
+            	default:				difficultyModNum = 1; break;
+            	}
+                    
+            switch (difficultyModNum) {
+                case 1:
+                    ubNumSoldiers = (UINT8)(ubNumSoldiers * 0.40); // 40%
+                    break;
+                case 2:
+                    ubNumSoldiers = (UINT8)(ubNumSoldiers * 0.60); // 66%
+                    break;
+                case 3:
+                    ubNumSoldiers = (UINT8)(ubNumSoldiers * 1.00); // 100%
+                    break;
+                default:
+                    // Handle unexpected difficulty levels
+                    ubNumSoldiers = (UINT8)(ubNumSoldiers * 1.00); // Default to 100%
+                    break;
+            }
+
 
 			// anv: replace one of soldiers with tank
 			if ( ubNumSoldiers )
