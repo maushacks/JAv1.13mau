@@ -156,7 +156,8 @@ jobs:
     if: needs.workflow_setup.outputs.assemble_release == 'true'
     runs-on: ubuntu-latest
 
-    steps:
+
+  steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
